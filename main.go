@@ -70,29 +70,29 @@ type FrequencyValues struct {
 func CalculateUncontrolledSafeDistance(freq_values FrequencyValues, cable_values CableValues, transmitter_power int16,
 	feedline_length int16, duty_cycle float64, uncontrolled_percentage_30_minutes float64) float64 {
 
-	var gamma float64 = CalculateReflectionCoefficient(freq_values)
+	gamma := CalculateReflectionCoefficient(freq_values)
 
-	var feedline_loss_per_100ft_at_frequency float64 = CalculateFeedlineLossPer100ftAtFrequency(freq_values, cable_values)
+	feedline_loss_per_100ft_at_frequency := CalculateFeedlineLossPer100ftAtFrequency(freq_values, cable_values)
 
-	var feedline_loss_for_matched_load_at_frequency float64 = CalculateFeedlineLossForMatchedLoadAtFrequency(feedline_length, feedline_loss_per_100ft_at_frequency)
+	feedline_loss_for_matched_load_at_frequency := CalculateFeedlineLossForMatchedLoadAtFrequency(feedline_length, feedline_loss_per_100ft_at_frequency)
 
-	var feedline_loss_for_matched_load_at_frequency_percentage float64 = CalculateFeedlineLossForMatchedLoadAtFrequencyPercentage(feedline_loss_for_matched_load_at_frequency)
+	feedline_loss_for_matched_load_at_frequency_percentage := CalculateFeedlineLossForMatchedLoadAtFrequencyPercentage(feedline_loss_for_matched_load_at_frequency)
 
-	var gamma_squared float64 = math.Pow(math.Abs(gamma), 2)
+	gamma_squared := math.Pow(math.Abs(gamma), 2)
 
-	var feedline_loss_for_swr float64 = CalculateFeedlineLossForSWR(feedline_loss_for_matched_load_at_frequency_percentage, gamma_squared)
+	feedline_loss_for_swr := CalculateFeedlineLossForSWR(feedline_loss_for_matched_load_at_frequency_percentage, gamma_squared)
 
-	var feedline_loss_for_swr_percentage float64 = CalculateFeedlineLossForSWRPercentage(feedline_loss_for_swr)
+	feedline_loss_for_swr_percentage := CalculateFeedlineLossForSWRPercentage(feedline_loss_for_swr)
 
-	var power_loss_at_swr float64 = feedline_loss_for_swr_percentage * float64(transmitter_power)
+	power_loss_at_swr := feedline_loss_for_swr_percentage * float64(transmitter_power)
 
-	var peak_envelope_power_at_antenna float64 = float64(transmitter_power) - power_loss_at_swr
+	peak_envelope_power_at_antenna := float64(transmitter_power) - power_loss_at_swr
 
-	var uncontrolled_average_pep = peak_envelope_power_at_antenna * duty_cycle * uncontrolled_percentage_30_minutes
+	uncontrolled_average_pep := peak_envelope_power_at_antenna * duty_cycle * uncontrolled_percentage_30_minutes
 
-	var mpe_s = 180 / (math.Pow(freq_values.freq, 2))
+	mpe_s := 180 / (math.Pow(freq_values.freq, 2))
 
-	var gain_decimal = math.Pow(10, freq_values.gaindbi/10)
+	gain_decimal := math.Pow(10, freq_values.gaindbi/10)
 
 	return math.Sqrt((0.219 * uncontrolled_average_pep * gain_decimal) / mpe_s)
 }
