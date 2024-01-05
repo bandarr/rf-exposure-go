@@ -51,7 +51,7 @@ func main() {
 	}
 
 	for _, f := range all_frequency_values {
-		var yarg float64 = CalculateUncontrolledSafeDistance(f, c1, xmtr_power, feedline_length, duty_cycle, per_30)
+		yarg := CalculateUncontrolledSafeDistance(f, c1, xmtr_power, feedline_length, duty_cycle, per_30)
 		fmt.Printf("%6.2f", yarg)
 	}
 }
