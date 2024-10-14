@@ -1,11 +1,10 @@
-package main
+package rfexposure
 
 import (
-	"fmt"
 	"math"
 )
 
-func main() {
+func TestStub() []float64 {
 
 	var xmtr_power int16 = 1000
 	var feedline_length int16 = 73
@@ -50,10 +49,13 @@ func main() {
 		},
 	}
 
+	var uncontrolled_safe_distances []float64
+
 	for _, f := range all_frequency_values {
-		yarg := CalculateUncontrolledSafeDistance(f, c1, xmtr_power, feedline_length, duty_cycle, per_30)
-		fmt.Printf("%6.2f", yarg)
+		uncontrolled_safe_distances = append(uncontrolled_safe_distances, CalculateUncontrolledSafeDistance(f, c1, xmtr_power, feedline_length, duty_cycle, per_30))
 	}
+
+	return uncontrolled_safe_distances
 }
 
 type CableValues struct {
